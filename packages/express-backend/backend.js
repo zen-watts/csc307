@@ -58,9 +58,24 @@ const filterUsers = ({ name, job }) => {
 
 /* POST Helpers */
 const addUser = (user) => {
+    user.id = randomId();
     users["users_list"].push(user);
     return user;
 };
+
+const randomLetters = (n) => {
+    let s = "";
+    for (let i = 0; i < n; i++) s += String.fromCharCode(97 + Math.floor(Math.random() * 26));
+    return s;
+  };
+  
+const randomDigits = (n) => {
+    return String(Math.floor(Math.random() * 10 ** n)).padStart(n, "0");
+}
+
+const randomId = () => {
+    return randomLetters(3) + randomDigits(3);
+}
 
 /* DELETE Helpers */
 const deleteUserById = (id) => {
@@ -98,8 +113,8 @@ app.get("/users/:id", (req, res) => {
   
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    const user = addUser(userToAdd);
+    res.status(201).json(user);
 });
 
 /* DELETE Endpoints */
