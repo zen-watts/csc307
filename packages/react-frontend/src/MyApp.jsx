@@ -33,11 +33,32 @@ function MyApp() {
       });
     }
 
+    function deleteUser(id) {
+      return fetch(`http://localhost:8000/users/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (res.status === 204) {
+          return true;
+        }
+        if (res.status === 404) {
+          return Promise.reject(new Error("Not found"));
+        }
+        return Promise.reject(new Error(`Expected 204, got ${res.status}`));
+      });
+    }
+
     function removeOneCharacter(index) {
-        const updated = characters.filter((character, i) => {
-            return i !== index;
+      const id = characters[index]?.id;
+
+      deleteUser(id).then(() => {
+        const updated = characters.filter((c) => {
+          return c.id !== id;
         });
-        setCharacters(updated);
+      setCharacters(updated);
+      })
+      .catch((error) => {
+        console.error(err);
+      });
     }
 
     function updateList(person) { 
