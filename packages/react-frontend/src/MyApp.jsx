@@ -48,16 +48,16 @@ function MyApp() {
     }
 
     function removeOneCharacter(index) {
-      const id = characters[index]?.id;
+      const id = characters[index]?._id;
 
       deleteUser(id).then(() => {
         const updated = characters.filter((c) => {
-          return c.id !== id;
+          return c._id !== id;
         });
       setCharacters(updated);
       })
       .catch((error) => {
-        console.error(err);
+        console.error(error);
       });
     }
 
